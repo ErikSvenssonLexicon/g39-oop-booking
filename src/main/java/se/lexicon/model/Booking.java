@@ -29,7 +29,7 @@ public class Booking {
     }
 
     public Booking(LocalDateTime dateTime, double price, String vaccineId, Premises premises) {
-        this(UUID.randomUUID().toString(), dateTime, price, null, vaccineId, premises,null, true);
+        this(UUID.randomUUID().toString(), dateTime, price, null, vaccineId, premises, null, true);
     }
 
     public String getId() {
