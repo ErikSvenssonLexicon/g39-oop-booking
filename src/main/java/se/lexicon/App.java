@@ -25,7 +25,7 @@ public class App
         userCredentialsList.add(new UserCredentials("simonelbrink", "Don't Look At My Password", "ROLE_SUPER_ADMIN"));
 
 
-        UserCredentialsDAO userCredentialsDAO = new UserCredentialsDAOImpl();
+        UserCredentialsDAO userCredentialsDAO = UserCredentialsDAOImpl.getInstance();
 
         userCredentialsDAO.create(new UserCredentials("simon.123456","simonelbrink", "Don't Look At My Password", "ROLE_SUPER_ADMIN"));
         userCredentialsDAO.create(new UserCredentials("erik.123456","eriksvensson", "Don't Look At My Password1", "ROLE_SUPER_ADMIN"));
@@ -36,8 +36,8 @@ public class App
 
         //------
 
-        //Not Consistent with other dao,
-        UserCredentialsDAO userCredentialsDAO1 = new UserCredentialsDAOImpl();
+        //Consistent with other dao they share the same memory address. on line 28.
+        UserCredentialsDAO userCredentialsDAO1 = UserCredentialsDAOImpl.getInstance();
 
 
         userCredentialsDAO1.create(new UserCredentials("ulf", "password", "Admin"));
@@ -55,6 +55,18 @@ public class App
 //         UserCredentials user1= userCredentialsDAO.findById("erik.123456");
 //        System.out.println(user1.toString());
 
+
+
+//        Object reference example
+        Object a = new Object();
+
+        Object b = new Object();
+
+        Object c = a;
+
+        System.out.println("a = " + a);
+        System.out.println("b = " + b);
+        System.out.println("c = " + c); // Same object address as variable "a"
 
 
     }

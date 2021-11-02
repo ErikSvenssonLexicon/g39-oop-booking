@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 
 public class UserCredentialsDAOImplTest {
 
-    private UserCredentialsDAOImpl testObject  = new UserCredentialsDAOImpl();
+    private UserCredentialsDAOImpl testObject;
 
     private static final String ID = "erik.123456";
     private static final String USERNAME = "eriksvensson";
@@ -31,10 +31,7 @@ public class UserCredentialsDAOImplTest {
 
     @Before
     public void setUp(){
-
-        for (UserCredentials uc: users) {
-            testObject.create(uc);
-        }
+        testObject = UserCredentialsDAOImpl.getTestInstance(users);
 
         erik = users.get(0);
 
