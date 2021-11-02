@@ -72,4 +72,13 @@ public class UserCredentials {
         }
         this.role = role;
     }
+
+    @Override
+    public String toString() {
+        return "UserCredentials{" +
+                "id='" + id + '\'' +
+                ", username='" + username + '\'' +
+                ", role='" + role + '\'' +
+                '}';
+    }
 }
