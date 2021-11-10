@@ -38,18 +38,6 @@ public class UserCredentialsDAOImplTest {
     }
 
     @Test
-    public void create_successfully(){
-
-        UserCredentials toSave = new UserCredentials("testaccount", "124356", ROLE_SUPER_ADMIN);
-
-        boolean wasSaved = testObject.create(toSave);
-
-        assertTrue(wasSaved);
-        assertTrue(testObject.userCredentialsStorage.contains(toSave));
-
-    }
-
-    @Test
     public void findAll_successfully(){
 
         List<UserCredentials> found = testObject.findAll();

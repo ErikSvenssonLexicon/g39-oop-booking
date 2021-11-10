@@ -4,6 +4,7 @@ import se.lexicon.model.UserCredentials;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class UserCredentialsDAOImpl implements UserCredentialsDAO {
 
@@ -37,9 +38,9 @@ public class UserCredentialsDAOImpl implements UserCredentialsDAO {
     }
 
     @Override
-    public boolean create(UserCredentials userCredentials) {
-        boolean isSaved = userCredentialsStorage.add(userCredentials);
-        return isSaved;
+    public UserCredentials create(UserCredentials userCredentials) {
+        userCredentialsStorage.add(userCredentials);
+        return userCredentials;
     }
 
     @Override
@@ -49,15 +50,15 @@ public class UserCredentialsDAOImpl implements UserCredentialsDAO {
     }
 
     @Override
-    public UserCredentials findById(String id) {
+    public Optional<UserCredentials> findById(String id) {
 
         for (UserCredentials uc : userCredentialsStorage) {
             if (uc.getId().equals(id)) {
-                return uc;
+                return Optional.of(uc);
             }
         }
 
-        return null;
+        return Optional.empty();
     }
 
     @Override
@@ -89,11 +90,8 @@ public class UserCredentialsDAOImpl implements UserCredentialsDAO {
 
     @Override
     public boolean delete(String id) {
-
-        UserCredentials foundById = findById(id);
-
-        boolean wasDeleted = userCredentialsStorage.remove(foundById);
-
-        return wasDeleted;
+        findById(id)
+                .ifPresent(userCredentialsStorage::remove);
+        return true;
     }
 }
