@@ -1,8 +1,9 @@
 package se.lexicon.model;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class Premises {
+public class Premises implements Serializable {
 
     private final String id;
     private String name;

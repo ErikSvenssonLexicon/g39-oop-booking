@@ -1,8 +1,9 @@
 package se.lexicon.model;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class Address {
+public class Address implements Serializable {
     private final String id;
     private String streetAddress;
     private String zipCode;
@@ -31,6 +32,7 @@ public class Address {
     }
 
     public void setStreetAddress(String streetAddress) {
+        if(streetAddress == null) throw new IllegalArgumentException("Parameter: String streetAddress was null");
         this.streetAddress = streetAddress;
     }
 
@@ -39,6 +41,7 @@ public class Address {
     }
 
     public void setZipCode(String zipCode) {
+        if(zipCode == null) throw new IllegalArgumentException("Parameter: String zipCode was null");
         this.zipCode = zipCode;
     }
 
@@ -47,6 +50,7 @@ public class Address {
     }
 
     public void setCity(String city) {
+        if(city == null) throw new IllegalArgumentException("Parameter: String city was null");
         this.city = city;
     }
 }

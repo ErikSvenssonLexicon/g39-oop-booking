@@ -1,11 +1,12 @@
 package se.lexicon.data;
 
+import se.lexicon.data.interfaces.PatientDAO;
 import se.lexicon.model.Patient;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class PatientDAOImpl implements PatientDAO{
+public class PatientDAOImpl implements PatientDAO {
 
     private static final PatientDAOImpl INSTANCE;
 
@@ -44,7 +45,7 @@ public class PatientDAOImpl implements PatientDAO{
     @Override
     public boolean delete(String id) {
         Optional<Patient> optionalPatient = findById(id);
-        return optionalPatient.filter(patients::remove).isPresent();
+        return optionalPatient.map(patients::remove).orElse(false);
 
     }
 

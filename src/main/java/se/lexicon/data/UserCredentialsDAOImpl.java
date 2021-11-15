@@ -1,5 +1,6 @@
 package se.lexicon.data;
 
+import se.lexicon.data.interfaces.UserCredentialsDAO;
 import se.lexicon.model.UserCredentials;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class UserCredentialsDAOImpl implements UserCredentialsDAO {
 
 
 
-    protected List<UserCredentials> userCredentialsStorage;
+    private final List<UserCredentials> userCredentialsStorage;
 
     private UserCredentialsDAOImpl(List<UserCredentials> userCredentialsList) {
         if (userCredentialsList == null){
@@ -45,7 +46,7 @@ public class UserCredentialsDAOImpl implements UserCredentialsDAO {
 
     @Override
     public List<UserCredentials> findAll() {
-        return userCredentialsStorage;
+        return new ArrayList<>(userCredentialsStorage);
 
     }
 
@@ -62,15 +63,15 @@ public class UserCredentialsDAOImpl implements UserCredentialsDAO {
     }
 
     @Override
-    public UserCredentials findByUserName(String userName) {
+    public Optional<UserCredentials> findByUserName(String userName) {
 
         for (UserCredentials uc : userCredentialsStorage) {
             if (uc.getUsername().equals(userName)){
-                return uc;
+                return Optional.of(uc);
             }
         }
 
-        return null;
+        return Optional.empty();
     }
 
     @Override
@@ -90,8 +91,7 @@ public class UserCredentialsDAOImpl implements UserCredentialsDAO {
 
     @Override
     public boolean delete(String id) {
-        findById(id)
-                .ifPresent(userCredentialsStorage::remove);
-        return true;
+        Optional<UserCredentials> optional = findById(id);
+        return optional.map(userCredentialsStorage::remove).orElse(false);
     }
 }

@@ -1,6 +1,6 @@
 package se.lexicon;
 
-import se.lexicon.data.UserCredentialsDAO;
+import se.lexicon.data.interfaces.UserCredentialsDAO;
 import se.lexicon.data.UserCredentialsDAOImpl;
 import se.lexicon.model.UserCredentials;
 

@@ -1,4 +1,4 @@
-package se.lexicon.data;
+package se.lexicon.data.interfaces;
 
 import se.lexicon.model.Patient;
 

@@ -1,8 +1,9 @@
 package se.lexicon.model;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class ContactInfo {
+public class ContactInfo implements Serializable {
 
     private final String id;
     private String email;

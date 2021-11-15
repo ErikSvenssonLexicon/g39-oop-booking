@@ -1,9 +1,10 @@
 package se.lexicon.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class Booking {
+public class Booking implements Serializable {
 
     private final String id;
     private LocalDateTime dateTime;
@@ -41,6 +42,7 @@ public class Booking {
     }
 
     public void setDateTime(LocalDateTime dateTime) {
+        if(dateTime == null) throw new IllegalArgumentException("Parameter dateTime was null");
         this.dateTime = dateTime;
     }
 
@@ -65,6 +67,7 @@ public class Booking {
     }
 
     public void setVaccineId(String vaccineId) {
+        if(vaccineId == null) throw new IllegalArgumentException("Parameter: String vaccineId was null");
         this.vaccineId = vaccineId;
     }
 
@@ -81,6 +84,7 @@ public class Booking {
     }
 
     public void setPremises(Premises premises) {
+        if(premises == null) throw new IllegalArgumentException("Parameter: Premises premises was null");
         this.premises = premises;
     }
 

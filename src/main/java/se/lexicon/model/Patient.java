@@ -1,9 +1,10 @@
 package se.lexicon.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.UUID;
 
-public class Patient {
+public class Patient implements Serializable {
     private final String id;
     private String ssn;
     private String firstName;
