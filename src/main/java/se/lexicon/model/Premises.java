@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public class Premises implements Serializable {
 
-    private final String id;
+    private String id;
     private String name;
     private Address address;
     private ContactInfo contactInfo;
@@ -23,6 +23,8 @@ public class Premises implements Serializable {
     public Premises(String name, Address address) {
         this(UUID.randomUUID().toString(), name, address, null);
     }
+
+    Premises(){}
 
     public String getId() {
         return id;

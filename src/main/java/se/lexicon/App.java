@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class App 
 {
-    public static final String CREDENTIALS_JSON = "src/main/resources/json/credentials.json";
+
 
     public static void main( String[] args ) {
         UserCredentialsDAO userCredentialsDAO = UserCredentialsDAOImpl.getInstance();

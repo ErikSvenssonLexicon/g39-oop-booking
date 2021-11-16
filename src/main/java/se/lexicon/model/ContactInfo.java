@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public class ContactInfo implements Serializable {
 
-    private final String id;
+    private String id;
     private String email;
     private String phone;
 
@@ -20,6 +20,9 @@ public class ContactInfo implements Serializable {
 
     public ContactInfo(String email, String phone) {
         this(UUID.randomUUID().toString(), email, phone);
+    }
+
+    ContactInfo() {
     }
 
     public String getId() {

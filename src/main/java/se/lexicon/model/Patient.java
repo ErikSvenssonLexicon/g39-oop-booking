@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public class Patient implements Serializable {
-    private final String id;
+    private String id;
     private String ssn;
     private String firstName;
     private String lastName;
@@ -50,6 +50,9 @@ public class Patient implements Serializable {
                 credentials,
                 contactInfo
         );
+    }
+
+    Patient() {
     }
 
     public String getId() {

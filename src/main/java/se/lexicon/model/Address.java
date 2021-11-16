@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 public class Address implements Serializable {
-    private final String id;
+    private String id;
     private String streetAddress;
     private String zipCode;
     private String city;
@@ -21,6 +21,9 @@ public class Address implements Serializable {
 
     public Address(String streetAddress, String zipCode, String city) {
         this(UUID.randomUUID().toString(), streetAddress, zipCode, city);
+    }
+
+    Address() {
     }
 
     public String getId() {

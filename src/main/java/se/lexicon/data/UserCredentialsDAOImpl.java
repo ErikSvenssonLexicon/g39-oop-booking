@@ -1,15 +1,15 @@
 package se.lexicon.data;
 
-import se.lexicon.App;
 import se.lexicon.data.interfaces.UserCredentialsDAO;
 import se.lexicon.io.JSONManager;
 import se.lexicon.model.UserCredentials;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static se.lexicon.io.URLConstants.CREDENTIALS_JSON;
 
 public class UserCredentialsDAOImpl implements UserCredentialsDAO {
 
@@ -20,7 +20,7 @@ public class UserCredentialsDAOImpl implements UserCredentialsDAO {
     static {
         // If you want to seed with some data from File or similar, replace null.
         INSTANCE = new UserCredentialsDAOImpl(
-                JSONManager.getInstance().deserializeFromJSON(new File(App.CREDENTIALS_JSON), UserCredentials.class)
+                JSONManager.getInstance().deserializeFromJSON(new File(CREDENTIALS_JSON), UserCredentials.class)
         );
     }
 

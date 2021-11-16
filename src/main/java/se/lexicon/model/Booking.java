@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public class Booking implements Serializable {
 
-    private final String id;
+    private String id;
     private LocalDateTime dateTime;
     private double price;
     private String administrator;
@@ -31,6 +31,9 @@ public class Booking implements Serializable {
 
     public Booking(LocalDateTime dateTime, double price, String vaccineId, Premises premises) {
         this(UUID.randomUUID().toString(), dateTime, price, null, vaccineId, premises, null, true);
+    }
+
+    Booking() {
     }
 
     public String getId() {
