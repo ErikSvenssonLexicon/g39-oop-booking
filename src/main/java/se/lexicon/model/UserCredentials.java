@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public class UserCredentials implements Serializable {
 
-    private final String id;
+    private String id;
     private String username;
     private String password;
     private String role;
@@ -31,6 +31,8 @@ public class UserCredentials implements Serializable {
     public UserCredentials(String username, String password, String role) {
         this(UUID.randomUUID().toString(), username, password, role);
     }
+
+    UserCredentials(){}
 
     public String getId() {
         return id;
