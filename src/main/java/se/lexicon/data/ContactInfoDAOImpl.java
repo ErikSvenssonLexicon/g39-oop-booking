@@ -1,16 +1,22 @@
 package se.lexicon.data;
 
 import se.lexicon.data.interfaces.ContactInfoDAO;
+import se.lexicon.io.JSONManager;
 import se.lexicon.model.ContactInfo;
 
+import java.io.File;
 import java.util.*;
+
+import static se.lexicon.io.URLConstants.CONTACT_INFO_JSON;
 
 public class ContactInfoDAOImpl implements ContactInfoDAO {
 
     private static final ContactInfoDAOImpl INSTANCE;
 
     static {
-        INSTANCE = new ContactInfoDAOImpl(null);
+        INSTANCE = new ContactInfoDAOImpl(
+                JSONManager.getInstance().deserializeFromJSON(new File(CONTACT_INFO_JSON), ContactInfo.class)
+        );
     }
 
     public static ContactInfoDAO getInstance(){

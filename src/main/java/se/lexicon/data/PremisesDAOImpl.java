@@ -1,17 +1,23 @@
 package se.lexicon.data;
 
 import se.lexicon.data.interfaces.PremisesDAO;
+import se.lexicon.io.JSONManager;
 import se.lexicon.model.Premises;
 
+import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static se.lexicon.io.URLConstants.PREMISES_JSON;
 
 public class PremisesDAOImpl implements PremisesDAO {
 
     private static final PremisesDAOImpl INSTANCE;
 
     static {
-        INSTANCE = new PremisesDAOImpl(null);
+        INSTANCE = new PremisesDAOImpl(
+                JSONManager.getInstance().deserializeFromJSON(new File(PREMISES_JSON), Premises.class)
+        );
     }
 
     public static PremisesDAO getInstance(){

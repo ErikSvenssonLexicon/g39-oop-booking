@@ -1,17 +1,23 @@
 package se.lexicon.data;
 
 import se.lexicon.data.interfaces.AddressDAO;
+import se.lexicon.io.JSONManager;
 import se.lexicon.model.Address;
 
+import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static se.lexicon.io.URLConstants.ADDRESSES_JSON;
 
 public class AddressDAOImpl implements AddressDAO {
 
     private static final AddressDAOImpl INSTANCE;
 
     static {
-        INSTANCE = new AddressDAOImpl(null);
+        INSTANCE = new AddressDAOImpl(
+                JSONManager.getInstance().deserializeFromJSON(new File(ADDRESSES_JSON), Address.class)
+        );
     }
 
     private AddressDAOImpl(Collection<Address> addresses){

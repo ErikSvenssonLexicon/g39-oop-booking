@@ -1,17 +1,23 @@
 package se.lexicon.data;
 
 import se.lexicon.data.interfaces.PatientDAO;
+import se.lexicon.io.JSONManager;
 import se.lexicon.model.Patient;
 
+import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static se.lexicon.io.URLConstants.PATIENTS_JSON;
 
 public class PatientDAOImpl implements PatientDAO {
 
     private static final PatientDAOImpl INSTANCE;
 
     static {
-        INSTANCE = new PatientDAOImpl(null);
+        INSTANCE = new PatientDAOImpl(
+                JSONManager.getInstance().deserializeFromJSON(new File(PATIENTS_JSON), Patient.class)
+        );
     }
 
     public static PatientDAOImpl getInstance(){

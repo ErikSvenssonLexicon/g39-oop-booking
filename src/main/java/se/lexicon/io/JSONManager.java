@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +21,7 @@ public class JSONManager {
     }
 
     private final ObjectMapper objectMapper;
+    private static final Logger LOGGER = Logger.getLogger(JSONManager.class.getName());
 
     private JSONManager() {
         objectMapper = new ObjectMapper();
@@ -31,7 +33,7 @@ public class JSONManager {
         try{
             objectMapper.writeValue(file, data);
         }catch (IOException ex){
-            ex.printStackTrace();
+            LOGGER.warn(ex.getMessage(), ex);
         }
     }
 
@@ -40,8 +42,9 @@ public class JSONManager {
         JavaType type = objectMapper.getTypeFactory().constructParametricType(List.class, clazz);
         try{
             result = objectMapper.readValue(file, type);
+            LOGGER.info("Collection of " + clazz.getSimpleName() + " successfully deserialized.");
         }catch (IOException ex){
-            ex.printStackTrace();
+            LOGGER.warn(ex.getMessage(), ex);
         }
         return result;
     }

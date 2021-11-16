@@ -1,18 +1,24 @@
 package se.lexicon.data;
 
 import se.lexicon.data.interfaces.BookingDAO;
+import se.lexicon.io.JSONManager;
 import se.lexicon.model.Booking;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static se.lexicon.io.URLConstants.BOOKINGS_JSON;
 
 public class BookingDAOImpl implements BookingDAO {
 
     private static final BookingDAOImpl INSTANCE;
 
     static {
-        INSTANCE = new BookingDAOImpl(null);
+        INSTANCE = new BookingDAOImpl(
+                JSONManager.getInstance().deserializeFromJSON(new File(BOOKINGS_JSON), Booking.class)
+        );
     }
 
     public static BookingDAO getInstance(){

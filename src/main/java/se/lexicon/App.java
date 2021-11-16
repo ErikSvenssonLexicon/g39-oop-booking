@@ -1,5 +1,8 @@
 package se.lexicon;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.Layout;
 import se.lexicon.data.interfaces.UserCredentialsDAO;
 import se.lexicon.data.UserCredentialsDAOImpl;
 import se.lexicon.io.JSONManager;
