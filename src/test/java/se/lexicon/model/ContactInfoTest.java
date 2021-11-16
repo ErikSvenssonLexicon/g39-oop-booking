@@ -1,9 +1,10 @@
 package se.lexicon.model;
 
-import org.junit.Before;
-import org.junit.Test;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ContactInfoTest {
 
@@ -11,7 +12,7 @@ public class ContactInfoTest {
     public static final String PHONE = "0914034032394";
     private ContactInfo testObject;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         testObject = new ContactInfo(
                 EMAIL, PHONE
@@ -25,8 +26,11 @@ public class ContactInfoTest {
         assertEquals(PHONE, testObject.getPhone());
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void constructor_throws_runtime_exception_on_null_id() {
-        new ContactInfo(null, EMAIL, PHONE);
+        assertThrows(
+                RuntimeException.class,
+                () -> new ContactInfo(null, EMAIL, PHONE)
+        );
     }
 }

@@ -1,11 +1,12 @@
 package se.lexicon.model;
 
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BookingTest {
 
@@ -15,7 +16,7 @@ public class BookingTest {
     private Booking testObject;
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         Premises premises = new Premises("Vårdcentral södra", new Address("Södergatan 3", "45263", "Byhåla"));
         testObject = new Booking(

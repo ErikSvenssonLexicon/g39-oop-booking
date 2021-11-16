@@ -1,9 +1,10 @@
 package se.lexicon.model;
 
-import org.junit.*;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AddressTest {
 
@@ -12,7 +13,7 @@ public class AddressTest {
     public static final String CITY = "Växjö";
     private Address testObject;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         testObject = new Address(
                 STREET_ADDRESS,
@@ -30,8 +31,11 @@ public class AddressTest {
         assertEquals(CITY, testObject.getCity());
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void given_null_id_constructor_throws_runtime_exception() {
-        new Address(null, null, null, null);
+        assertThrows(
+                RuntimeException.class,
+                () -> new Address(null, null, null, null)
+        );
     }
 }

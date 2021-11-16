@@ -1,14 +1,16 @@
 package se.lexicon.data;
 
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import se.lexicon.model.UserCredentials;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 public class UserCredentialsDAOImplTest {
 
@@ -29,7 +31,7 @@ public class UserCredentialsDAOImplTest {
             )
     );
 
-    @Before
+    @BeforeEach
     public void setUp(){
         testObject = UserCredentialsDAOImpl.getTestInstance(users);
 
@@ -39,9 +41,7 @@ public class UserCredentialsDAOImplTest {
 
     @Test
     public void findAll_successfully(){
-
         List<UserCredentials> found = testObject.findAll();
-
         assertEquals(3, found.size());
     }
 

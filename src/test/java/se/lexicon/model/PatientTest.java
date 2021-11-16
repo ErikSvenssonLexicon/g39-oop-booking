@@ -1,11 +1,11 @@
 package se.lexicon.model;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PatientTest {
 
@@ -17,7 +17,7 @@ public class PatientTest {
     private ContactInfo contactInfo;
     private UserCredentials userCredentials;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         contactInfo = new ContactInfo("nisse@gmail.com", "3425262");
         userCredentials = new UserCredentials("nisse", "nisse", "ROLE_USER");
@@ -41,13 +41,19 @@ public class PatientTest {
         assertNotNull(testObject.getCredentials());
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void constructor_throws_exception_on_null_id(){
-        new Patient(null, SSN, FIRST_NAME, LAST_NAME, BIRTH_DATE, userCredentials, contactInfo);
+        assertThrows(
+                RuntimeException.class,
+                () -> new Patient(null, SSN, FIRST_NAME, LAST_NAME, BIRTH_DATE, userCredentials, contactInfo)
+        );
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void setCredentials_null_throws_runtime_exception() {
-        testObject.setCredentials(null);
+        assertThrows(
+                RuntimeException.class,
+                () -> testObject.setCredentials(null)
+        );
     }
 }

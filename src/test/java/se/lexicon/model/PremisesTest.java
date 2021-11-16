@@ -1,9 +1,9 @@
 package se.lexicon.model;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PremisesTest {
 
@@ -12,7 +12,7 @@ public class PremisesTest {
     private ContactInfo contactInfo;
     private Address address;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         contactInfo = new ContactInfo("nisse@gmail.com", "12435455");
         address = new Address("Storgatan 1", "35235", "Byhåla");
@@ -31,13 +31,19 @@ public class PremisesTest {
         assertNotNull(testObject.getContactInfo());
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void constructor_throws_runtime_exception_on_null_id() {
-        new Premises(null, NAME, address, contactInfo);
+        assertThrows(
+                RuntimeException.class,
+                () -> new Premises(null, NAME, address, contactInfo)
+        );
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void setAddress_throws_runtime_exception_on_null() {
-        testObject.setAddress(null);
+        assertThrows(
+                RuntimeException.class,
+                () -> testObject.setAddress(null)
+        );
     }
 }

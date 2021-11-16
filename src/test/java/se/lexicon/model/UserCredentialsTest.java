@@ -1,9 +1,10 @@
 package se.lexicon.model;
 
-import org.junit.Before;
-import org.junit.Test;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class UserCredentialsTest {
 
@@ -12,7 +13,7 @@ public class UserCredentialsTest {
     public static final String ROLE = "ROLE_SUPER_ADMIN";
     private UserCredentials testObject;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         testObject = new UserCredentials(USERNAME, PASSWORD, ROLE);
     }
@@ -25,23 +26,35 @@ public class UserCredentialsTest {
         assertEquals(ROLE, testObject.getRole());
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void constructor_throws_runtime_exception_on_null_id() {
-        new UserCredentials(null, USERNAME, PASSWORD, ROLE);
+        assertThrows(
+                RuntimeException.class,
+                () -> new UserCredentials(null, USERNAME, PASSWORD, ROLE)
+        );
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void setUsername_null_throws_runtime_exception() {
-        testObject.setUsername(null);
+        assertThrows(
+                RuntimeException.class,
+                () -> testObject.setUsername(null)
+        );
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void setPassword_null_throws_runtime_exception() {
-        testObject.setPassword(null);
+        assertThrows(
+                RuntimeException.class,
+                () -> testObject.setPassword(null)
+        );
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void setRole_null_throws_runtime_exception() {
-        testObject.setRole(null);
+        assertThrows(
+                RuntimeException.class,
+                () -> testObject.setRole(null)
+        );
     }
 }
