@@ -66,7 +66,7 @@ public class PatientDAOImpl implements PatientDAO {
     @Override
     public List<Patient> findByName(String name) {
         return patients.stream()
-                .filter(patient -> patient.getFirstName().toLowerCase().contains(name.toLowerCase()) || patient.getLastName().toLowerCase().contains(name.toLowerCase()))
+                .filter(patient -> (patient.getFirstName() + " " + patient.getLastName()).toLowerCase().contains(name.toLowerCase()))
                 .collect(Collectors.toList());
     }
 
