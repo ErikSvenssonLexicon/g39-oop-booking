@@ -12,23 +12,19 @@ import static se.lexicon.io.URLConstants.ADDRESSES_JSON;
 
 public class AddressDAOImpl implements AddressDAO {
 
-    private static final AddressDAOImpl INSTANCE;
-
-    static {
-        INSTANCE = new AddressDAOImpl(
-                JSONManager.getInstance().deserializeFromJSON(new File(ADDRESSES_JSON), Address.class)
-        );
-    }
+    private static AddressDAOImpl INSTANCE;
 
     private AddressDAOImpl(Collection<Address> addresses){
-        this.addresses = addresses == null ? new HashSet<>() : new HashSet<>(addresses);
+        this.addresses = addresses == null ? new HashSet<>(JSONManager.getInstance().deserializeFromJSON(new File(ADDRESSES_JSON), Address.class)) : new HashSet<>(addresses);
     }
 
     public static AddressDAO getInstance(){
+        if(INSTANCE == null) INSTANCE = new AddressDAOImpl(null);
         return INSTANCE;
     }
 
     static AddressDAOImpl getTestInstance(Collection<Address> addresses){
+        if(addresses == null) addresses = new ArrayList<>();
         return new AddressDAOImpl(addresses);
     }
 

@@ -5,9 +5,7 @@ import se.lexicon.io.JSONManager;
 import se.lexicon.model.UserCredentials;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static se.lexicon.io.URLConstants.CREDENTIALS_JSON;
 
@@ -15,32 +13,25 @@ public class UserCredentialsDAOImpl implements UserCredentialsDAO {
 
     //SINGLETON, to accomplice Single Source of truth. - One storage of userCredentials for this whole program.
 
-    private static final UserCredentialsDAOImpl INSTANCE;
-
-    static {
-        // If you want to seed with some data from File or similar, replace null.
-        INSTANCE = new UserCredentialsDAOImpl(
-                JSONManager.getInstance().deserializeFromJSON(new File(CREDENTIALS_JSON), UserCredentials.class)
-        );
-    }
+    private static UserCredentialsDAOImpl INSTANCE;
 
     public static UserCredentialsDAOImpl getInstance(){
+        if(INSTANCE == null) INSTANCE = new UserCredentialsDAOImpl(null);
         return INSTANCE;
     }
 
     static UserCredentialsDAOImpl getTestInstance(List<UserCredentials> userCredentials){
+        if(userCredentials == null) userCredentials = new ArrayList<>();
         return new UserCredentialsDAOImpl(userCredentials);
     }
 
+    private final Set<UserCredentials> userCredentialsStorage;
 
-
-    private final List<UserCredentials> userCredentialsStorage;
-
-    private UserCredentialsDAOImpl(List<UserCredentials> userCredentialsList) {
-        if (userCredentialsList == null){
-            userCredentialsStorage = new ArrayList<>();
+    private UserCredentialsDAOImpl(Collection<UserCredentials> userCredentials) {
+        if (userCredentials == null){
+            userCredentialsStorage = new HashSet<>(JSONManager.getInstance().deserializeFromJSON(new File(CREDENTIALS_JSON), UserCredentials.class));
         }else{
-            this.userCredentialsStorage = userCredentialsList;
+            this.userCredentialsStorage = new HashSet<>(userCredentials);
         }
     }
 

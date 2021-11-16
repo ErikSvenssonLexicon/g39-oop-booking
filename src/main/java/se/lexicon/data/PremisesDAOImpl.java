@@ -12,24 +12,20 @@ import static se.lexicon.io.URLConstants.PREMISES_JSON;
 
 public class PremisesDAOImpl implements PremisesDAO {
 
-    private static final PremisesDAOImpl INSTANCE;
-
-    static {
-        INSTANCE = new PremisesDAOImpl(
-                JSONManager.getInstance().deserializeFromJSON(new File(PREMISES_JSON), Premises.class)
-        );
-    }
+    private static PremisesDAOImpl INSTANCE;
 
     public static PremisesDAO getInstance(){
+        if(INSTANCE == null) INSTANCE = new PremisesDAOImpl(null);
         return INSTANCE;
     }
 
     static PremisesDAOImpl getTestInstance(Collection<Premises> premises){
+        if(premises == null) premises = new ArrayList<>();
         return new PremisesDAOImpl(premises);
     }
 
     private PremisesDAOImpl(Collection<Premises> premises){
-        this.premisesSet = premises == null ? new HashSet<>() : new HashSet<>(premises);
+        this.premisesSet = premises == null ? new HashSet<>(JSONManager.getInstance().deserializeFromJSON(new File(PREMISES_JSON), Premises.class)) : new HashSet<>(premises);
     }
 
     private final Set<Premises> premisesSet;

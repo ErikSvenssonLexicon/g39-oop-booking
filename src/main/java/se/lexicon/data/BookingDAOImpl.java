@@ -13,24 +13,20 @@ import static se.lexicon.io.URLConstants.BOOKINGS_JSON;
 
 public class BookingDAOImpl implements BookingDAO {
 
-    private static final BookingDAOImpl INSTANCE;
-
-    static {
-        INSTANCE = new BookingDAOImpl(
-                JSONManager.getInstance().deserializeFromJSON(new File(BOOKINGS_JSON), Booking.class)
-        );
-    }
+    private static BookingDAOImpl INSTANCE;
 
     public static BookingDAO getInstance(){
+        if(INSTANCE == null) INSTANCE = new BookingDAOImpl(null);
         return INSTANCE;
     }
 
     static BookingDAOImpl getTestInstance(Collection<Booking> bookings){
+        if(bookings == null) bookings = new ArrayList<>();
         return new BookingDAOImpl(bookings);
     }
 
     private BookingDAOImpl(Collection<Booking> bookings){
-        this.bookings = bookings == null ? new HashSet<>() : new HashSet<>(bookings);
+        this.bookings = bookings == null ? new HashSet<>(JSONManager.getInstance().deserializeFromJSON(new File(BOOKINGS_JSON), Booking.class)) : new HashSet<>(bookings);
     }
 
     private final Set<Booking> bookings;

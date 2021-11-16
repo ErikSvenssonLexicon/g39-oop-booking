@@ -3,6 +3,7 @@ package se.lexicon.data;
 import se.lexicon.data.interfaces.PatientDAO;
 import se.lexicon.io.JSONManager;
 import se.lexicon.model.Patient;
+import se.lexicon.model.Premises;
 
 import java.io.File;
 import java.util.*;
@@ -12,20 +13,20 @@ import static se.lexicon.io.URLConstants.PATIENTS_JSON;
 
 public class PatientDAOImpl implements PatientDAO {
 
-    private static final PatientDAOImpl INSTANCE;
-
-    static {
-        INSTANCE = new PatientDAOImpl(
-                JSONManager.getInstance().deserializeFromJSON(new File(PATIENTS_JSON), Patient.class)
-        );
-    }
+    private static PatientDAOImpl INSTANCE;
 
     public static PatientDAOImpl getInstance(){
+        if(INSTANCE == null) INSTANCE = new PatientDAOImpl(null);
         return INSTANCE;
     }
 
+    static PatientDAOImpl getTestInstance(Collection<Patient> patients){
+        if(patients == null) patients = new ArrayList<>();
+        return new PatientDAOImpl(patients);
+    }
+
     private PatientDAOImpl(Collection<Patient> patientCollection){
-        this.patients = patientCollection == null ? new HashSet<>() : new HashSet<>(patientCollection);
+        this.patients = patientCollection == null ? new HashSet<>(JSONManager.getInstance().deserializeFromJSON(new File(PATIENTS_JSON), Patient.class)) : new HashSet<>(patientCollection);
     }
 
     private final Set<Patient> patients;
