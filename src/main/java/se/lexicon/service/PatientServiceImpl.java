@@ -1,8 +1,10 @@
 package se.lexicon.service;
 
+import se.lexicon.data.interfaces.BookingDAO;
 import se.lexicon.data.interfaces.ContactInfoDAO;
 import se.lexicon.data.interfaces.PatientDAO;
 import se.lexicon.exception.AppResourceNotFoundException;
+import se.lexicon.model.Booking;
 import se.lexicon.model.ContactInfo;
 import se.lexicon.model.Patient;
 import se.lexicon.model.dto.forms.PatientForm;
@@ -13,11 +15,13 @@ public class PatientServiceImpl implements PatientService{
 
     private final PatientDAO patientDAO;
     private final ContactInfoDAO contactInfoDAO;
+    private final BookingDAO bookingDAO;
     private final UserCredentialsService userCredentialsService;
 
-    public PatientServiceImpl(PatientDAO patientDAO, ContactInfoDAO contactInfoDAO, UserCredentialsService userCredentialsService) {
+    public PatientServiceImpl(PatientDAO patientDAO, ContactInfoDAO contactInfoDAO, BookingDAO bookingDAO, UserCredentialsService userCredentialsService) {
         this.patientDAO = patientDAO;
         this.contactInfoDAO = contactInfoDAO;
+        this.bookingDAO = bookingDAO;
         this.userCredentialsService = userCredentialsService;
     }
 
@@ -74,12 +78,24 @@ public class PatientServiceImpl implements PatientService{
     }
 
     @Override
-    public Patient update(String id, PatientForm dto) {
-        return null;
+    public Patient update(String id, PatientForm form) {
+        Patient patient = findById(id);
+
+        patient.setFirstName(form.getFirstName());
+        patient.setLastName(form.getLastName());
+        patient.setBirthDate(form.getBirthDate());
+        patient.setSsn(form.getSsn());
+
+        return patient;
     }
 
     @Override
     public boolean delete(String id) {
-        return false;
+        Patient patient = findById(id);
+        userCredentialsService.delete(patient.getCredentials().getId());
+        contactInfoDAO.delete(patient.getContactInfo().getId());
+        List<Booking> bookings = bookingDAO.findByPatientId(id);
+        bookings.forEach(booking -> booking.setPatient(null));
+        return patientDAO.delete(id);
     }
 }

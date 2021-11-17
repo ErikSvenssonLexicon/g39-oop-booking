@@ -2,7 +2,6 @@ package se.lexicon.service;
 
 import se.lexicon.model.Patient;
 import se.lexicon.model.dto.forms.PatientForm;
-import se.lexicon.model.dto.views.PatientDTO;
 
 import java.util.List;
 
