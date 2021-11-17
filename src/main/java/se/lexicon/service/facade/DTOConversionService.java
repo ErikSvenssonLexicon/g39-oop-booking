@@ -1,4 +1,4 @@
-package se.lexicon.service;
+package se.lexicon.service.facade;
 
 import se.lexicon.model.Booking;
 import se.lexicon.model.Patient;
