@@ -1,11 +1,9 @@
 package se.lexicon.service;
 
 import se.lexicon.data.interfaces.BookingDAO;
-import se.lexicon.data.interfaces.ContactInfoDAO;
 import se.lexicon.data.interfaces.PatientDAO;
 import se.lexicon.exception.AppResourceNotFoundException;
 import se.lexicon.model.Booking;
-import se.lexicon.model.ContactInfo;
 import se.lexicon.model.Patient;
 import se.lexicon.model.dto.forms.PatientForm;
 
@@ -14,13 +12,13 @@ import java.util.List;
 public class PatientServiceImpl implements PatientService{
 
     private final PatientDAO patientDAO;
-    private final ContactInfoDAO contactInfoDAO;
+    private final ContactInfoService contactInfoService;
     private final BookingDAO bookingDAO;
     private final UserCredentialsService userCredentialsService;
 
-    public PatientServiceImpl(PatientDAO patientDAO, ContactInfoDAO contactInfoDAO, BookingDAO bookingDAO, UserCredentialsService userCredentialsService) {
+    public PatientServiceImpl(PatientDAO patientDAO, ContactInfoService contactInfoService, BookingDAO bookingDAO, UserCredentialsService userCredentialsService) {
         this.patientDAO = patientDAO;
-        this.contactInfoDAO = contactInfoDAO;
+        this.contactInfoService = contactInfoService;
         this.bookingDAO = bookingDAO;
         this.userCredentialsService = userCredentialsService;
     }
@@ -37,7 +35,7 @@ public class PatientServiceImpl implements PatientService{
                 form.getLastName(),
                 form.getBirthDate(),
                 userCredentialsService.create(form.getCredentials(), "ROLE_USER"),
-                contactInfoDAO.create(new ContactInfo(form.getContactInfo().getEmail(), form.getContactInfo().getPhone()))
+                form.getContactInfo() == null ? null : contactInfoService.create(form.getContactInfo())
         );
 
         return patientDAO.create(patient);
@@ -93,7 +91,7 @@ public class PatientServiceImpl implements PatientService{
     public boolean delete(String id) {
         Patient patient = findById(id);
         userCredentialsService.delete(patient.getCredentials().getId());
-        contactInfoDAO.delete(patient.getContactInfo().getId());
+        contactInfoService.delete(patient.getContactInfo().getId());
         List<Booking> bookings = bookingDAO.findByPatientId(id);
         bookings.forEach(booking -> booking.setPatient(null));
         return patientDAO.delete(id);

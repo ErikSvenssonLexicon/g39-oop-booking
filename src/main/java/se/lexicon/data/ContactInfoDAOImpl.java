@@ -55,4 +55,11 @@ public class ContactInfoDAOImpl implements ContactInfoDAO {
                 .map(contactInfos::remove)
                 .orElse(false);
     }
+
+    @Override
+    public Optional<ContactInfo> findByEmail(String email) {
+        return contactInfos.stream()
+                .filter(contactInfo -> contactInfo.getEmail().equalsIgnoreCase(email))
+                .findFirst();
+    }
 }
