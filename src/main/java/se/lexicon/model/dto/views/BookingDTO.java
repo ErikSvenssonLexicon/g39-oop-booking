@@ -1,4 +1,4 @@
-package se.lexicon.model.dto;
+package se.lexicon.model.dto.views;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -10,6 +10,7 @@ public class BookingDTO {
     private LocalDateTime dateTime;
     private double price;
     private String vaccineId;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String administrator;
     private boolean vacant;
     @JsonInclude(JsonInclude.Include.NON_NULL)

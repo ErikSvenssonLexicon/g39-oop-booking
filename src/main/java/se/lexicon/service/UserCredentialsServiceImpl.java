@@ -1,73 +1,70 @@
 package se.lexicon.service;
 
 import se.lexicon.data.interfaces.UserCredentialsDAO;
+import se.lexicon.exception.AppResourceNotFoundException;
 import se.lexicon.model.UserCredentials;
-import se.lexicon.model.dto.UserCredentialsDTO;
+import se.lexicon.model.dto.forms.UserCredentialsForm;
+import se.lexicon.model.dto.views.UserCredentialsDTO;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class UserCredentialsServiceImpl implements UserCredentialsService{
 
     private final UserCredentialsDAO userDAO;
-    private final DTOConversionService conversionService;
 
-    public UserCredentialsServiceImpl(UserCredentialsDAO userDAO, DTOConversionService conversionService) {
+    public UserCredentialsServiceImpl(UserCredentialsDAO userDAO) {
         this.userDAO = userDAO;
-        this.conversionService = conversionService;
     }
 
-    @Override
-    public UserCredentialsDTO create(String username, String password, String role) {
-        if(username == null || username.isEmpty()){
+    public void validate(UserCredentialsForm form){
+        if(form == null){
+            throw new IllegalArgumentException("Form was null");
+        }
+        if(form.getUsername() == null || form.getUsername().isEmpty()){
             throw new IllegalArgumentException("Username is not allowed to be null or empty");
         }
-        if(password == null || password.isEmpty()){
+        if(form.getPassword() == null || form.getPassword().isEmpty()){
             throw new IllegalArgumentException("Password is not allowed to be null or empty");
         }
-        if(role == null || role.isEmpty()){
-            throw new IllegalArgumentException("Role is not allowed to be null or empty");
+        if(userDAO.findByUserName(form.getUsername()).isPresent()){
+            throw new IllegalArgumentException("Username " + form.getUsername() + " is already taken");
         }
-        if(userDAO.findByUserName(username).isPresent()){
-            throw new IllegalArgumentException("Username " + username + " is already taken");
-        }
-        UserCredentials userCredentials = new UserCredentials(username.trim(), password, role.trim());
+    }
+
+    @Override
+    public UserCredentials create(UserCredentialsForm form, String role) {
+        validate(form);
+        UserCredentials userCredentials = new UserCredentials(form.getUsername(), form.getPassword(), role);
         userCredentials = userDAO.create(userCredentials);
 
-        return conversionService.toUserCredentialsDTO(userCredentials);
+        return userCredentials;
     }
 
     @Override
-    public UserCredentialsDTO findById(String id) {
+    public UserCredentials findById(String id) {
         return userDAO.findById(id)
-                .map(conversionService::toUserCredentialsDTO)
-                .orElseThrow(() -> new RuntimeException("Could not find user with id" + id));
+                .orElseThrow(() -> new AppResourceNotFoundException("Could not find user with id" + id));
     }
 
     @Override
-    public UserCredentialsDTO findByUsername(String username) {
+    public UserCredentials findByUsername(String username) {
         return userDAO.findByUserName(username.trim())
-                .map(conversionService::toUserCredentialsDTO)
-                .orElseThrow(() -> new RuntimeException("Could not find user with username " + username));
+                .orElseThrow(() -> new AppResourceNotFoundException("Could not find user with username " + username));
     }
 
     @Override
-    public List<UserCredentialsDTO> findByRole(String role) {
-        return userDAO.findByRole(role.trim()).stream()
-                .map(conversionService::toUserCredentialsDTO)
-                .collect(Collectors.toList());
+    public List<UserCredentials> findByRole(String role) {
+        return userDAO.findByRole(role);
     }
 
     @Override
-    public List<UserCredentialsDTO> findAll() {
-        return userDAO.findAll().stream()
-                .map(conversionService::toUserCredentialsDTO)
-                .collect(Collectors.toList());
+    public List<UserCredentials> findAll() {
+        return userDAO.findAll();
     }
 
     @Override
-    public UserCredentialsDTO update(String username, UserCredentialsDTO dto) {
+    public UserCredentials update(String username, UserCredentialsDTO dto) {
         UserCredentials userCredentials = userDAO.findByUserName(username)
                 .orElseThrow(() -> new IllegalArgumentException("Update aborted, could not find user with username " + username));
 
@@ -79,7 +76,7 @@ public class UserCredentialsServiceImpl implements UserCredentialsService{
         userCredentials.setUsername(dto.getUsername());
         userCredentials.setRole(dto.getRole());
 
-        return conversionService.toUserCredentialsDTO(userCredentials);
+        return userCredentials;
     }
 
     @Override

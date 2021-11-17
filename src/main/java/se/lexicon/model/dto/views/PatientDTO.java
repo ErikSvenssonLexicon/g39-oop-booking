@@ -1,4 +1,4 @@
-package se.lexicon.model.dto;
+package se.lexicon.model.dto.views;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import se.lexicon.model.ContactInfo;
@@ -8,15 +8,24 @@ import java.util.List;
 
 public class PatientDTO {
 
+    //Mandatory
     private String id;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String ssn;
+    //Mandatory
     private String firstName;
+    //Mandatory
     private String lastName;
+    //Mandatory
     private LocalDate birthDate;
+
+    //Optional
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<BookingDTO> bookings;
+    //Optional
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private UserCredentialsDTO credentials;
+    //Optional
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private ContactInfo contactInfo;
 

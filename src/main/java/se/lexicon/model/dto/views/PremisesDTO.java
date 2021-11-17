@@ -1,4 +1,4 @@
-package se.lexicon.model.dto;
+package se.lexicon.model.dto.views;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import se.lexicon.model.Address;

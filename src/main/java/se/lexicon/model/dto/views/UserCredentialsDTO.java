@@ -1,8 +1,9 @@
-package se.lexicon.model.dto;
+package se.lexicon.model.dto.views;
 
 public class UserCredentialsDTO {
     private String id;
     private String username;
+
     private String role;
 
     public UserCredentialsDTO() {
