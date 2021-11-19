@@ -30,7 +30,8 @@ public class FormValidator {
                 sb.append(clazz.getName());
 
                 for(ConstraintViolation<T> violation : validationResult){
-                    sb.append("\n ").append(violation.getMessage());
+
+                    sb.append("\n ").append(violation.getPropertyPath()).append(": ").append(violation.getMessage());
                 }
                 throw new IllegalArgumentException(sb.toString());
             }
