@@ -18,7 +18,8 @@ public class PremisesTest {
         address = new Address("Storgatan 1", "35235", "Byhåla");
         testObject = new Premises(
                 NAME,
-                address
+                address,
+                null
         );
         testObject.setContactInfo(contactInfo);
     }

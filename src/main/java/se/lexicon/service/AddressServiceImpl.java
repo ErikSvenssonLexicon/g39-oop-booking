@@ -16,22 +16,11 @@ public class AddressServiceImpl implements AddressService{
         this.addressDAO = addressDAO;
     }
 
-    public void validate(AddressForm form){
-        if(form == null) throw new IllegalArgumentException("Form was null");
-        if(form.getCity() == null || form.getCity().isEmpty()){
-            throw new RuntimeException("form.city is not allowed to be null or empty");
-        }
-        if(form.getStreetAddress() == null || form.getStreetAddress().isEmpty()){
-            throw new RuntimeException("form.streetAddress is not allowed to be null or empty");
-        }
-        if(form.getZipCode() == null || form.getZipCode().isEmpty()){
-            throw new RuntimeException("form.zipCode is not allowed to be null or empty");
-        }
-    }
 
     @Override
     public Address create(AddressForm form) {
-        validate(form);
+        if(form == null) throw new IllegalArgumentException("Form was null");
+        FormValidator.getInstance().validate(form, AddressForm.class);
 
         return addressDAO.findAll().stream()
                 .filter(

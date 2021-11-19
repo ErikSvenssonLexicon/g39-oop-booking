@@ -19,9 +19,7 @@ public class ContactInfoServiceImpl implements ContactInfoService{
     @Override
     public ContactInfo create(ContactInfoForm form) {
         if(form == null) throw new IllegalArgumentException("Form was null");
-        if(form.getEmail() == null || form.getEmail().isEmpty()){
-            throw new IllegalArgumentException("Email is not allowed to be null or empty");
-        }
+        FormValidator.getInstance().validate(form, ContactInfoForm.class);
         if(contactInfoDAO.findByEmail(form.getEmail()).isPresent()){
             throw new IllegalArgumentException("Email " + form.getEmail()+ " is already taken");
         }
@@ -43,9 +41,7 @@ public class ContactInfoServiceImpl implements ContactInfoService{
     @Override
     public ContactInfo update(String id, ContactInfoForm form) {
         if(form == null) throw new IllegalArgumentException("Form was null");
-        if(form.getEmail() == null || form.getEmail().isEmpty()){
-            throw new IllegalArgumentException("Email is not allowed to be null or empty");
-        }
+        FormValidator.getInstance().validate(form, ContactInfoForm.class);
         ContactInfo contactInfo = findById(id);
         Optional<ContactInfo> optional = contactInfoDAO.findByEmail(form.getEmail());
         if(optional.isPresent() && !optional.get().getId().equals(contactInfo.getId())){

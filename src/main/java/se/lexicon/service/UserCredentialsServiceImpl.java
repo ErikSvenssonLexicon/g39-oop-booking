@@ -17,24 +17,17 @@ public class UserCredentialsServiceImpl implements UserCredentialsService{
         this.userDAO = userDAO;
     }
 
-    public void validate(UserCredentialsForm form){
-        if(form == null){
-            throw new IllegalArgumentException("Form was null");
-        }
-        if(form.getUsername() == null || form.getUsername().isEmpty()){
-            throw new IllegalArgumentException("Username is not allowed to be null or empty");
-        }
-        if(form.getPassword() == null || form.getPassword().isEmpty()){
-            throw new IllegalArgumentException("Password is not allowed to be null or empty");
-        }
+    @Override
+    public UserCredentials create(UserCredentialsForm form, String role) {
+        if(form == null) throw new IllegalArgumentException("Form was null");
+        if(role == null) throw new IllegalArgumentException("Role was null");
+
+        FormValidator.getInstance().validate(form, UserCredentialsForm.class);
+
         if(userDAO.findByUserName(form.getUsername()).isPresent()){
             throw new IllegalArgumentException("Username " + form.getUsername() + " is already taken");
         }
-    }
 
-    @Override
-    public UserCredentials create(UserCredentialsForm form, String role) {
-        validate(form);
         UserCredentials userCredentials = new UserCredentials(form.getUsername(), form.getPassword(), role);
         userCredentials = userDAO.create(userCredentials);
 
@@ -64,17 +57,16 @@ public class UserCredentialsServiceImpl implements UserCredentialsService{
     }
 
     @Override
-    public UserCredentials update(String username, UserCredentialsDTO dto) {
-        UserCredentials userCredentials = userDAO.findByUserName(username)
-                .orElseThrow(() -> new IllegalArgumentException("Update aborted, could not find user with username " + username));
+    public UserCredentials update(String username, UserCredentialsForm form) {
+        if(username == null) throw new IllegalArgumentException("Username was null");
 
-        Optional<UserCredentials> optional = userDAO.findByUserName(dto.getUsername());
+        UserCredentials userCredentials = findByUsername(username);
+
+        Optional<UserCredentials> optional = userDAO.findByUserName(form.getUsername());
         if(optional.isPresent() && !optional.get().getId().equals(userCredentials.getId())){
-            throw new RuntimeException("Update aborted, username " + dto.getUsername() + " is already taken");
-        }
+            throw new RuntimeException("Update aborted, username " + form.getUsername() + " is already taken");        }
 
-        userCredentials.setUsername(dto.getUsername());
-        userCredentials.setRole(dto.getRole());
+        userCredentials.setUsername(form.getUsername());
 
         return userCredentials;
     }

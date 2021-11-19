@@ -13,7 +13,7 @@ public interface UserCredentialsService {
     UserCredentials findByUsername(String username);
     List<UserCredentials> findByRole(String role);
     List<UserCredentials> findAll();
-    UserCredentials update(String username, UserCredentialsDTO dto);
+    UserCredentials update(String username, UserCredentialsForm form);
     boolean delete(String id);
 
 }

@@ -18,7 +18,7 @@ public class BookingTest {
 
     @BeforeEach
     public void setUp() {
-        Premises premises = new Premises("Vårdcentral södra", new Address("Södergatan 3", "45263", "Byhåla"));
+        Premises premises = new Premises("Vårdcentral södra", new Address("Södergatan 3", "45263", "Byhåla"), null);
         testObject = new Booking(
                 DATE_TIME,
                 PRICE,

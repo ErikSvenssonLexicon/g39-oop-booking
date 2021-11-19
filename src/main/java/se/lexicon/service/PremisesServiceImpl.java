@@ -5,6 +5,8 @@ import se.lexicon.data.interfaces.PremisesDAO;
 import se.lexicon.exception.AppResourceNotFoundException;
 import se.lexicon.model.Booking;
 import se.lexicon.model.Premises;
+import se.lexicon.model.dto.forms.AddressForm;
+import se.lexicon.model.dto.forms.ContactInfoForm;
 import se.lexicon.model.dto.forms.PremisesForm;
 
 import java.util.List;
@@ -23,31 +25,25 @@ public class PremisesServiceImpl implements  PremisesService{
         this.bookingDAO = bookingDAO;
     }
 
-    public void validate(PremisesForm form, boolean post){
-        if(form != null){
-            if(post && form.getId() != null){
-                throw new IllegalArgumentException("form.id should be null");
-            }
-            if(!post && form.getId() == null){
-                throw new IllegalArgumentException("form.id was null");
-            }
-            if(form.getName() == null || form.getName().isEmpty()){
-                throw new IllegalArgumentException("form.name was null or empty");
-            }
-        }else {
-            throw new IllegalStateException("Form was null");
-        }
-    }
-
-
     @Override
     public Premises create(PremisesForm form) {
-        validate(form, true);
+        if(form == null) throw new IllegalArgumentException("Form was null");
+        if(form.getAddress() == null) throw new IllegalArgumentException("Form.address was null");
+        FormValidator formValidator = FormValidator.getInstance();
+
+        formValidator.validate(form, PremisesForm.class);
+        formValidator.validate(form.getAddress(), AddressForm.class);
+
+        if(form.getContactInfo() != null){
+            formValidator.validate(form.getContactInfo(), ContactInfoForm.class);
+        }
+
         Premises premises = new Premises(
                 form.getName(),
-                addressService.create(form.getAddress())
+                addressService.create(form.getAddress()),
+                form.getContactInfo() == null ? null : contactInfoService.create(form.getContactInfo())
         );
-        premises.setContactInfo(contactInfoService.create(form.getContactInfo()));
+
 
         return premisesDAO.create(premises);
     }
@@ -81,12 +77,10 @@ public class PremisesServiceImpl implements  PremisesService{
     @Override
     public Premises update(String id, PremisesForm premisesForm) {
         if(id == null) throw new IllegalArgumentException("Id was null");
-        validate(premisesForm, false);
+        if(premisesForm == null) throw new IllegalArgumentException("Form was null");
+        FormValidator.getInstance().validate(premisesForm, PremisesForm.class);
         Premises premises = findById(id);
-        premises.setName(premises.getName().trim());
-        if(premisesForm.getAddress() != null){
-            premises.setAddress(addressService.update(premisesForm.getAddress()));
-        }
+        premises.setName(premisesForm.getName().trim());
         return premises;
     }
 

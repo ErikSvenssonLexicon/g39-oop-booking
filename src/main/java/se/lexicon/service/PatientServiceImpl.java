@@ -5,9 +5,12 @@ import se.lexicon.data.interfaces.PatientDAO;
 import se.lexicon.exception.AppResourceNotFoundException;
 import se.lexicon.model.Booking;
 import se.lexicon.model.Patient;
+import se.lexicon.model.dto.forms.ContactInfoForm;
 import se.lexicon.model.dto.forms.PatientForm;
+import se.lexicon.model.dto.forms.UserCredentialsForm;
 
 import java.util.List;
+import java.util.Optional;
 
 public class PatientServiceImpl implements PatientService{
 
@@ -25,9 +28,13 @@ public class PatientServiceImpl implements PatientService{
 
     @Override
     public Patient create(PatientForm form) {
-        if(form.getContactInfo() != null && patientDAO.findByEmail(form.getContactInfo().getEmail()).isPresent()){
-            throw new IllegalArgumentException("Email " + form.getContactInfo().getEmail() + " is already taken");
-        }
+        if(form == null) throw new IllegalArgumentException("Form was null");
+        if(form.getCredentials() == null) throw new IllegalArgumentException("form.credentials was null");
+
+        FormValidator formValidator = FormValidator.getInstance();
+        formValidator.validate(form.getContactInfo(), ContactInfoForm.class);
+        formValidator.validate(form.getCredentials(), UserCredentialsForm.class);
+        formValidator.validate(form, PatientForm.class);
 
         Patient patient = new Patient(
                 form.getSsn(),
@@ -78,6 +85,12 @@ public class PatientServiceImpl implements PatientService{
     @Override
     public Patient update(String id, PatientForm form) {
         Patient patient = findById(id);
+        FormValidator.getInstance().validate(form, PatientForm.class);
+
+        Optional<Patient> optional = patientDAO.findBySSN(form.getSsn());
+        if(optional.isPresent() && !optional.get().getId().equals(patient.getId())){
+            throw new IllegalArgumentException("Provided pnr already exists in system with in a patient with different id");
+        }
 
         patient.setFirstName(form.getFirstName());
         patient.setLastName(form.getLastName());

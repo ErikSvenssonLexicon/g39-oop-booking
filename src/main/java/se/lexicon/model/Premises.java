@@ -20,8 +20,8 @@ public class Premises implements Serializable {
         setContactInfo(contactInfo);
     }
 
-    public Premises(String name, Address address) {
-        this(UUID.randomUUID().toString(), name, address, null);
+    public Premises(String name, Address address, ContactInfo contactInfo) {
+        this(UUID.randomUUID().toString(), name, address, contactInfo);
     }
 
     Premises(){}
