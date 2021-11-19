@@ -87,7 +87,6 @@ public class Booking implements Serializable {
     }
 
     public void setPremises(Premises premises) {
-        if(premises == null) throw new IllegalArgumentException("Parameter: Premises premises was null");
         this.premises = premises;
     }
 
