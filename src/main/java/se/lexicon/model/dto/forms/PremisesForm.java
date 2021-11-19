@@ -1,10 +1,13 @@
 package se.lexicon.model.dto.forms;
 
+import jakarta.validation.constraints.NotBlank;
+
 import java.io.Serializable;
 
 public class PremisesForm implements Serializable {
 
     private String id;
+    @NotBlank(message = "This field is mandatory")
     private String name;
     private AddressForm address;
     private ContactInfoForm contactInfo;

@@ -1,17 +1,23 @@
 package se.lexicon.model.dto.forms;
 
-import se.lexicon.model.Premises;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 public class BookingForm implements Serializable {
     private String id;
+    @NotNull(message = "This field is mandatory")
     private LocalDateTime dateTime;
+    @PositiveOrZero(message = "Need to be 0 or positive number")
     private double price;
     private String administrator;
+    @NotBlank(message = "This field is required")
     private String vaccineId;
     private boolean vacant;
+    @NotBlank(message = "This field is required")
     private String premisesId;
 
     public BookingForm() {
