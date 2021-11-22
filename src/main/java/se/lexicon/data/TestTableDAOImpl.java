@@ -86,16 +86,75 @@ public class TestTableDAOImpl extends AbstractDAO implements TestTableDAO {
 
     @Override
     public Optional<TestTableEntity> findById(Integer integer) {
-        return Optional.empty();
+        TestTableEntity entity = null;
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try{
+            connection = getConnection();
+            statement = connection.prepareStatement("SELECT * FROM test_table WHERE id = ?");
+            statement.setInt(1, integer);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                entity = convertFrom(resultSet);
+            }
+
+        }catch (SQLException ex){
+            ex.printStackTrace();
+        }finally {
+            closeAll(resultSet, statement, connection);
+        }
+
+        return Optional.ofNullable(entity);
     }
 
+    /*
+    DELETE FROM table_name WHERE condition;
+     */
     @Override
     public boolean delete(Integer integer) {
-        return false;
+        Connection connection = null;
+        PreparedStatement statement = null;
+        int rows = 0;
+        try{
+            connection = getConnection();
+            statement = connection.prepareStatement("DELETE from test_table WHERE id = ?");
+            statement.setInt(1, integer);
+            rows = statement.executeUpdate();
+        }catch (SQLException ex){
+            ex.printStackTrace();
+        }finally {
+            closeAll(statement, connection);
+        }
+        return rows > 0;
     }
 
+    /*
+    UPDATE table_name
+    SET column1 = value1, column2 = value2, ...
+    WHERE condition;
+     */
     @Override
     public TestTableEntity update(TestTableEntity testTableEntity) {
-        return null;
+        if(testTableEntity == null) throw new IllegalArgumentException("Entity was null");
+        if(testTableEntity.getId() == 0) throw new IllegalStateException("It seems entity is not yet persisted");
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try{
+            connection = getConnection();
+            statement = connection.prepareStatement("UPDATE test_table SET description = ?, number = ? WHERE id = ?");
+            statement.setString(1, testTableEntity.getDescription());
+            statement.setInt(2, testTableEntity.getNumber());
+            statement.setInt(3,testTableEntity.getId());
+            statement.execute();
+
+        }catch (SQLException ex){
+            ex.printStackTrace();
+        }finally {
+            closeAll(statement, connection);
+        }
+
+        return testTableEntity;
     }
 }

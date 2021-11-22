@@ -17,13 +17,10 @@ import static se.lexicon.io.URLConstants.*;
  */
 public class App 
 {
-
-
     public static void main( String[] args ) throws IOException {
         DatabaseCredentials.initialize("credentials/mysql.properties");
         TestTableDAO testTableDAO = new TestTableDAOImpl();
-        testTableDAO.findAll().forEach(System.out::println);
-
+        System.out.println(testTableDAO.delete(1));
     }
 
     public static void shutdown() {
