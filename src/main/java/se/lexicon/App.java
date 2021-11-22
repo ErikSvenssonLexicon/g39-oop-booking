@@ -1,9 +1,12 @@
 package se.lexicon;
 
 import se.lexicon.data.*;
+import se.lexicon.data.interfaces.TestTableDAO;
 import se.lexicon.io.JSONManager;
+import se.lexicon.model.TestTableEntity;
 
 import java.io.File;
+import java.io.IOException;
 
 import static se.lexicon.io.URLConstants.*;
 
@@ -16,8 +19,11 @@ public class App
 {
 
 
-    public static void main( String[] args ) {
-        shutdown();
+    public static void main( String[] args ) throws IOException {
+        DatabaseCredentials.initialize("credentials/mysql.properties");
+        TestTableDAO testTableDAO = new TestTableDAOImpl();
+        testTableDAO.findAll().forEach(System.out::println);
+
     }
 
     public static void shutdown() {
