@@ -2,6 +2,7 @@ package se.lexicon;
 
 import se.lexicon.data.*;
 import se.lexicon.data.interfaces.TestTableDAO;
+import se.lexicon.data.template.JDBCTemplate;
 import se.lexicon.io.JSONManager;
 import se.lexicon.model.TestTableEntity;
 
@@ -21,6 +22,13 @@ public class App
         DatabaseCredentials.initialize("credentials/mysql.properties");
         TestTableDAO testTableDAO = new TestTableDAOImpl();
         System.out.println(testTableDAO.delete(1));
+
+        JDBCTemplate template =  JDBCTemplate.from("SELECT * FROM test_table WHERE id = ?", 1)
+                .executeQuery();
+        TestTableEntity entity =  template.getSingleResult(resultSet -> new TestTableEntity(resultSet.getInt("id"), resultSet.getString("description"), resultSet.getInt("number")));
+
+
+        System.out.println(entity);
     }
 
     public static void shutdown() {

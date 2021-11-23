@@ -1,6 +1,7 @@
 package se.lexicon.data;
 
 import se.lexicon.model.TestTableEntity;
+import se.lexicon.model.UserCredentials;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -34,4 +35,12 @@ public abstract class AbstractDAO {
         );
     }
 
+    public UserCredentials mapUserCredentials(ResultSet resultSet) throws SQLException {
+        return new UserCredentials(
+                resultSet.getString("id"),
+                resultSet.getString("username"),
+                resultSet.getString("password"),
+                resultSet.getString("role")
+        );
+    }
 }

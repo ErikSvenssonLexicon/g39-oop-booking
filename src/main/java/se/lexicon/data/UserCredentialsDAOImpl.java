@@ -91,4 +91,9 @@ public class UserCredentialsDAOImpl implements UserCredentialsDAO {
         Optional<UserCredentials> optional = findById(id);
         return optional.map(userCredentialsStorage::remove).orElse(false);
     }
+
+    @Override
+    public UserCredentials update(UserCredentials userCredentials) {
+        return userCredentials;
+    }
 }

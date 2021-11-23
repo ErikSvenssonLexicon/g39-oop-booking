@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 //Responsible for storing and accessing userCredentials objects.
-public interface UserCredentialsDAO extends GenericCRUD<UserCredentials, String> {
+public interface UserCredentialsDAO extends Update<UserCredentials>,  GenericCRUD<UserCredentials, String> {
 
     //CRUD - Create Read Update Delete
     Optional<UserCredentials> findByUserName(String userName);
