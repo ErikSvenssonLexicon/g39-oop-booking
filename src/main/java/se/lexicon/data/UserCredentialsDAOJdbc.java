@@ -86,20 +86,20 @@ public class UserCredentialsDAOJdbc extends AbstractDAO implements UserCredentia
 
     @Override
     public boolean delete(String id) {
-        int rowsAffected = 0;
         Connection connection = null;
         PreparedStatement statement = null;
+        int rowsDeleted = 0;
         try{
             connection = getConnection();
-            statement = connection.prepareStatement("DELETE FROM contact_info WHERE id = ?");
+            statement = connection.prepareStatement("DELETE FROM user_credentials WHERE id = ?");
             statement.setString(1, id);
-            rowsAffected = statement.executeUpdate();
+            rowsDeleted = statement.executeUpdate();
         }catch (SQLException ex){
             ex.printStackTrace();
         }finally {
             closeAll(statement, connection);
         }
-        return rowsAffected > 0;
+        return rowsDeleted > 0;
     }
 
     @Override
@@ -155,6 +155,7 @@ public class UserCredentialsDAOJdbc extends AbstractDAO implements UserCredentia
         try{
             connection = getConnection();
             statement = connection.prepareStatement("SELECT * FROM user_credentials WHERE role = ?");
+            statement.setString(1, role);
             resultSet = statement.executeQuery();
             while(resultSet.next()){
                 result.add(mapUserCredentials(resultSet));

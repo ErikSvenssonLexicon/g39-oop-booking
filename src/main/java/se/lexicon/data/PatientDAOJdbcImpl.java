@@ -13,11 +13,18 @@ public class PatientDAOJdbcImpl extends AbstractDAO implements PatientDAO {
     public Patient create(Patient patient) {
         if(patient == null) throw new IllegalArgumentException("Entity was null");
         if(patient.getId() == null ) throw new IllegalArgumentException("Entity was null");
+        if(patient.getCredentials() == null || patient.getCredentials().getId() == null) throw new IllegalArgumentException("Entity patient.userDetails or it's id was null");
+        String contactId = null;
+        if(patient.getContactInfo() != null){
+            contactId = patient.getContactInfo().getId();
+        }
+
+
         Connection connection = null;
         PreparedStatement statement = null;
         try{
             connection = getConnection();
-            statement = connection.prepareStatement("INSERT INTO patient (id, ssn, first_name, last_name, birth_date, fk_user_credentials, fk_contact_info) " +
+            statement = connection.prepareStatement("INSERT INTO patient (id, ssn, first_name, last_name, birth_date, fk_user_credentials, fk_contact_info)" +
                     "VALUES (?, ?, ?, ?, ?, ?, ?)");
             statement.setString(1, patient.getId());
             statement.setString(2, patient.getSsn());
@@ -25,7 +32,8 @@ public class PatientDAOJdbcImpl extends AbstractDAO implements PatientDAO {
             statement.setString(4, patient.getLastName());
             statement.setObject(5, patient.getBirthDate());
             statement.setString(6, patient.getCredentials().getId());
-            statement.setString(7, patient.getContactInfo().getId());
+            statement.setString(7, contactId);
+
             statement.execute();
         }catch (SQLException ex){
             ex.printStackTrace();

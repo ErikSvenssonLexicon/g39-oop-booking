@@ -1,3 +1,5 @@
+
+
 drop table if exists booking;
 
 drop table if exists patient;
@@ -14,7 +16,7 @@ drop table if exists user_credentials;
 
 
 
-create table address
+create table if not exists address
 (
     id       varchar(255) not null
         primary key,
@@ -23,7 +25,7 @@ create table address
     city     varchar(255) not null
 );
 
-create table contact_info
+create table if not exists contact_info
 (
     id    varchar(255) not null
         primary key,
@@ -33,7 +35,7 @@ create table contact_info
         unique (email)
 );
 
-create table premises
+create table if not exists premises
 (
     id              varchar(255) not null
         primary key,
@@ -52,7 +54,7 @@ create index fk_premises_address1_idx
 create index fk_premises_contact_info1_idx
     on premises (fk_contact_info);
 
-create table test_table
+create table if not exists test_table
 (
     id          int auto_increment
         primary key,
@@ -60,7 +62,7 @@ create table test_table
     number      int          not null
 );
 
-create table user_credentials
+create table if not exists user_credentials
 (
     id       varchar(255) not null
         primary key,
@@ -71,7 +73,7 @@ create table user_credentials
         unique (username)
 );
 
-create table patient
+create table if not exists patient
 (
     id                  varchar(255) not null
         primary key,
@@ -89,7 +91,7 @@ create table patient
         foreign key (fk_user_credentials) references user_credentials (id)
 );
 
-create table booking
+create table if not exists booking
 (
     id            varchar(255) not null
         primary key,
@@ -117,4 +119,6 @@ create index fk_patient_contact_info1_idx
 
 create index fk_patient_user_credentials_idx
     on patient (fk_user_credentials);
+
+
 

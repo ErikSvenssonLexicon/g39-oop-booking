@@ -3,96 +3,87 @@ package se.lexicon.data;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import se.lexicon.model.Patient;
+import se.lexicon.H2Util;
+import se.lexicon.model.UserCredentials;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
-import java.time.LocalDate;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class UserCredentialsDAOJdbcTest {
+
+    public static H2Util h2Util;
+
     @BeforeAll
-    static void beforeAll() throws IOException {
-        DatabaseCredentials.initialize("credentials/h2.properties");
-
+    static void beforeAll(){
+        h2Util = H2Util.getInstance();
     }
 
-    public void dropAndCreateTables() throws Exception{
-        Connection connection = null;
-        Statement statement = null;
-        try(BufferedReader reader = Files.newBufferedReader(Paths.get("credentials/g39-booking.sql"))){
-            String sql = reader.lines()
-                    .collect(Collectors.joining());
+    private UserCredentialsDAOJdbc testObject;
 
-            System.err.println(sql);
-
-            connection = DriverManager.getConnection(DatabaseCredentials.getInstance().getUrl(), DatabaseCredentials.getInstance().getUser(), DatabaseCredentials.getInstance().getPassword());
-            statement = connection.createStatement();
-            statement.execute(sql);
-        }finally {
-            if(statement != null){
-                statement.close();
-            }
-            if(connection != null){
-                connection.close();
-            }
-        }
-    }
-
-    private PatientDAOJdbcImpl testObject;
+    private UserCredentials testUser;
 
     @BeforeEach
     void setUp() throws Exception{
-        dropAndCreateTables();
-        testObject = new PatientDAOJdbcImpl();
+        h2Util.dropAndCreateTables();
+        testObject = new UserCredentialsDAOJdbc();
+        testUser = new UserCredentials(
+                "terminator", "hastalavista", "ROLE_USER"
+        );
     }
 
     @Test
     void create() {
-        Patient patient = new Patient(
-                "123",
-                "198001011234",
-                "Nils",
-                "Svensson",
-                LocalDate.parse("1980-01-01")
-        );
-
-        Patient result = testObject.create(patient);
-
+        UserCredentials result = testObject.create(testUser);
         assertNotNull(result);
-        assertEquals("123", patient.getId());
-
+        assertTrue(testObject.findById(result.getId()).isPresent());
     }
 
     @Test
     void findAll() {
+        testObject.create(testUser);
+        assertEquals(1, testObject.findAll().size());
     }
 
     @Test
     void findById() {
+        testObject.create(testUser);
+        Optional<UserCredentials> result = testObject.findById(testUser.getId());
+        assertTrue(result.isPresent());
     }
 
     @Test
     void delete() {
+        testObject.create(testUser);
+        assertTrue(testObject.delete(testUser.getId()));
+        assertFalse(testObject.findById(testUser.getId()).isPresent());
     }
 
     @Test
     void update() {
+        testObject.create(testUser);
+        testUser.setUsername("eastwood");
+        testUser.setPassword("do_you_feel_lucky_punk");
+
+        UserCredentials userCredentials = testObject.update(testUser);
+
+        UserCredentials fromDatabase = testObject.findById(testUser.getId()).orElse(null);
+        assertNotNull(fromDatabase);
+        assertEquals("eastwood", fromDatabase.getUsername());
+        assertEquals("do_you_feel_lucky_punk", fromDatabase.getPassword());
+        assertEquals("ROLE_USER", fromDatabase.getRole());
     }
 
     @Test
     void findByUserName() {
+        testObject.create(testUser);
+        assertTrue(testObject.findByUserName("TERMINATOR").isPresent());
     }
 
     @Test
     void findByRole() {
+        testObject.create(testUser);
+        assertEquals(1, testObject.findByRole("ROLE_USER").size());
     }
 }
