@@ -1,5 +1,6 @@
 package se.lexicon.data;
 
+import se.lexicon.model.Patient;
 import se.lexicon.model.TestTableEntity;
 import se.lexicon.model.UserCredentials;
 
@@ -7,6 +8,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 public abstract class AbstractDAO {
     public void closeAll(AutoCloseable...closeables){
@@ -41,6 +43,16 @@ public abstract class AbstractDAO {
                 resultSet.getString("username"),
                 resultSet.getString("password"),
                 resultSet.getString("role")
+        );
+    }
+
+    public Patient mapPatient(ResultSet resultSet) throws SQLException{
+        return new Patient(
+                resultSet.getString("id"),
+                resultSet.getString("ssn"),
+                resultSet.getString("first_name"),
+                resultSet.getString("last_name"),
+                resultSet.getObject("birth_date", LocalDate.class)
         );
     }
 }

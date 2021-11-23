@@ -83,4 +83,9 @@ public class PatientDAOImpl implements PatientDAO {
                 .filter(patient -> patient.getContactInfo().getEmail().equalsIgnoreCase(email))
                 .findFirst();
     }
+
+    @Override
+    public Patient update(Patient patient) {
+        return patient;
+    }
 }

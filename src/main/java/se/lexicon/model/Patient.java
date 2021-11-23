@@ -52,6 +52,14 @@ public class Patient implements Serializable {
         );
     }
 
+    public Patient(String id, String ssn, String firstName, String lastName, LocalDate birthDate) {
+        this.id = id;
+        this.ssn = ssn;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+    }
+
     Patient() {
     }
 
