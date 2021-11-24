@@ -52,6 +52,15 @@ public class AddressDAOImpl implements AddressDAO {
     }
 
     @Override
+    public Optional<Address> findByStreetZipCodeAndCity(String street, String zipCode, String city) {
+        return addresses.stream()
+                .filter(address -> address.getStreetAddress().equalsIgnoreCase(street)
+                        && address.getZipCode().equalsIgnoreCase(zipCode)
+                        && address.getCity().equalsIgnoreCase(city))
+                .findFirst();
+    }
+
+    @Override
     public Address create(Address address) {
         if(address == null) throw new IllegalArgumentException("Address was null");
         if(address.getId() == null) throw new IllegalArgumentException("Address.id was null");

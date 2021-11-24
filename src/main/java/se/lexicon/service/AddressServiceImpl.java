@@ -22,12 +22,7 @@ public class AddressServiceImpl implements AddressService{
         if(form == null) throw new IllegalArgumentException("Form was null");
         FormValidator.getInstance().validate(form, AddressForm.class);
 
-        return addressDAO.findAll().stream()
-                .filter(
-                        address -> address.getStreetAddress().equalsIgnoreCase(form.getStreetAddress())
-                                && address.getZipCode().equalsIgnoreCase(form.getZipCode())
-                                && address.getCity().equalsIgnoreCase(form.getCity()))
-                .findFirst()
+        return addressDAO.findByStreetZipCodeAndCity(form.getStreetAddress(), form.getZipCode(), form.getCity())
                 .orElse(addressDAO.create(new Address(form.getStreetAddress(), form.getZipCode(), form.getCity())));
     }
 
