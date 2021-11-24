@@ -77,6 +77,28 @@ public class AddressDAOJdbcImpl extends AbstractDAO implements AddressDAO {
     }
 
     @Override
+    public long countReferencesToAddressId(String id) {
+        long count = 0;
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try{
+            connection = getConnection();
+            statement = connection.prepareStatement("SELECT COUNT(fk_address) as count FROM premises WHERE fk_address = ?");
+            statement.setString(1, id);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                count = resultSet.getLong("count");
+            }
+        }catch (SQLException ex){
+            ex.printStackTrace();
+        }finally {
+            closeAll(resultSet, statement, connection);
+        }
+        return count;
+    }
+
+    @Override
     public Optional<Address> findByStreetZipCodeAndCity(String street, String zipCode, String city) {
         Address result = null;
         Connection connection = null;

@@ -4,8 +4,11 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import se.lexicon.H2Util;
+import se.lexicon.data.DatabaseCredentials;
 import se.lexicon.model.Address;
+import se.lexicon.model.Premises;
 
+import java.sql.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -47,6 +50,19 @@ class AddressDAOJdbcImplTest {
         List<Address> result = testObject.findByStreetAddress(STREET_ADDRESS);
 
         assertEquals(expected, result.size());
+    }
+
+    @Test
+    void countReferencesToAddressId() throws SQLException {
+        Connection connection = DriverManager.getConnection(DatabaseCredentials.getInstance().getUrl(), DatabaseCredentials.getInstance().getUser(), DatabaseCredentials.getInstance().getPassword());
+        Statement statement = connection.createStatement();
+        statement.execute("INSERT INTO premises values ('p1', 'norr', null, 'id1') ");
+        statement.close();
+        connection.close();
+
+        long expected = 1;
+        long actual = testObject.countReferencesToAddressId(ID);
+        assertEquals(expected, actual);
     }
 
     @Test

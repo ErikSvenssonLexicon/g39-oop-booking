@@ -52,6 +52,13 @@ public class AddressDAOImpl implements AddressDAO {
     }
 
     @Override
+    public long countReferencesToAddressId(String id) {
+        return PremisesDAOImpl.getInstance().findAll().stream()
+                .filter(premises -> premises.getAddress().getId().equals(id))
+                .count();
+    }
+
+    @Override
     public Optional<Address> findByStreetZipCodeAndCity(String street, String zipCode, String city) {
         return addresses.stream()
                 .filter(address -> address.getStreetAddress().equalsIgnoreCase(street)
