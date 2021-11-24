@@ -1,14 +1,13 @@
-package se.lexicon.data;
+package se.lexicon.data.jdbc;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import se.lexicon.H2Util;
+import se.lexicon.data.jdbc.ContactInfoDAOJdbcImpl;
 import se.lexicon.model.ContactInfo;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 

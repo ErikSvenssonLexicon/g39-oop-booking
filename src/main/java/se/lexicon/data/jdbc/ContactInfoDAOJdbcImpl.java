@@ -1,5 +1,6 @@
-package se.lexicon.data;
+package se.lexicon.data.jdbc;
 
+import se.lexicon.data.AbstractDAO;
 import se.lexicon.data.interfaces.ContactInfoDAO;
 import se.lexicon.model.ContactInfo;
 

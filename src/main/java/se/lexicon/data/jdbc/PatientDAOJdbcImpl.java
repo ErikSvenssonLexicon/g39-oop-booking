@@ -1,5 +1,6 @@
-package se.lexicon.data;
+package se.lexicon.data.jdbc;
 
+import se.lexicon.data.AbstractDAO;
 import se.lexicon.data.interfaces.PatientDAO;
 import se.lexicon.model.Patient;
 

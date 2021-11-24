@@ -1,9 +1,10 @@
-package se.lexicon.data;
+package se.lexicon.data.jdbc;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import se.lexicon.H2Util;
+import se.lexicon.data.jdbc.UserCredentialsDAOJdbcImpl;
 import se.lexicon.model.UserCredentials;
 
 import java.util.Optional;
