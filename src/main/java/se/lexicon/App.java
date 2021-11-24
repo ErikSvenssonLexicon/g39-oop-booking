@@ -24,7 +24,7 @@ public class App
 {
     public static void main( String[] args ) throws IOException {
         DatabaseCredentials.initialize("credentials/mysql.properties");
-        
+
     }
 
     public static void shutdown() {

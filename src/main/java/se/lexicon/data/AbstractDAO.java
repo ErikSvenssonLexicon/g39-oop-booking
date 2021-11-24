@@ -1,5 +1,6 @@
 package se.lexicon.data;
 
+import se.lexicon.model.ContactInfo;
 import se.lexicon.model.Patient;
 import se.lexicon.model.TestTableEntity;
 import se.lexicon.model.UserCredentials;
@@ -53,6 +54,14 @@ public abstract class AbstractDAO {
                 resultSet.getString("first_name"),
                 resultSet.getString("last_name"),
                 resultSet.getObject("birth_date", LocalDate.class)
+        );
+    }
+
+    public ContactInfo mapContactInfo(ResultSet resultSet) throws SQLException{
+        return new ContactInfo(
+                resultSet.getString("id"),
+                resultSet.getString("email"),
+                resultSet.getString("phone")
         );
     }
 }

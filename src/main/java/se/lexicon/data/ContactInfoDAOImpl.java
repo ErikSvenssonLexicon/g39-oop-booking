@@ -62,4 +62,9 @@ public class ContactInfoDAOImpl implements ContactInfoDAO {
                 .filter(contactInfo -> contactInfo.getEmail().equalsIgnoreCase(email))
                 .findFirst();
     }
+
+    @Override
+    public ContactInfo update(ContactInfo contactInfo) {
+        return contactInfo;
+    }
 }

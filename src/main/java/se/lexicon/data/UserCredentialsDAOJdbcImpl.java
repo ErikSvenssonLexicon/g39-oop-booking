@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class UserCredentialsDAOJdbc extends AbstractDAO implements UserCredentialsDAO {
+public class UserCredentialsDAOJdbcImpl extends AbstractDAO implements UserCredentialsDAO {
 
 
     /*

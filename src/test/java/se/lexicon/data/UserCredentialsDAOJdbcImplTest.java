@@ -6,12 +6,11 @@ import org.junit.jupiter.api.Test;
 import se.lexicon.H2Util;
 import se.lexicon.model.UserCredentials;
 
-import java.io.IOException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UserCredentialsDAOJdbcTest {
+class UserCredentialsDAOJdbcImplTest {
 
     public static H2Util h2Util;
 
@@ -20,14 +19,14 @@ class UserCredentialsDAOJdbcTest {
         h2Util = H2Util.getInstance();
     }
 
-    private UserCredentialsDAOJdbc testObject;
+    private UserCredentialsDAOJdbcImpl testObject;
 
     private UserCredentials testUser;
 
     @BeforeEach
     void setUp() throws Exception{
         h2Util.dropAndCreateTables();
-        testObject = new UserCredentialsDAOJdbc();
+        testObject = new UserCredentialsDAOJdbcImpl();
         testUser = new UserCredentials(
                 "terminator", "hastalavista", "ROLE_USER"
         );
