@@ -75,4 +75,9 @@ public class PremisesDAOImpl implements PremisesDAO {
                 .filter(premises -> premises.getAddress().getZipCode().replaceAll(" ", "").equals(zipCode.replaceAll(" ","")))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Premises update(Premises premises) {
+        return premises;
+    }
 }

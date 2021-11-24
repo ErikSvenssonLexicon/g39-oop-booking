@@ -70,4 +70,11 @@ public abstract class AbstractDAO {
                 resultSet.getString("city")
         );
     }
+
+    public Premises mapPremises(ResultSet resultSet) throws SQLException{
+        return new Premises(
+                resultSet.getString("id"),
+                resultSet.getString("name")
+        );
+    }
 }

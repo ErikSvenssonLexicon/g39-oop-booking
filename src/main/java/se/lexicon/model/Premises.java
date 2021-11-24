@@ -24,6 +24,11 @@ public class Premises implements Serializable {
         this(UUID.randomUUID().toString(), name, address, contactInfo);
     }
 
+    public Premises(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     Premises(){}
 
     public String getId() {

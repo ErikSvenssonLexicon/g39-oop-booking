@@ -4,7 +4,7 @@ import se.lexicon.model.Premises;
 
 import java.util.List;
 
-public interface PremisesDAO extends GenericCRUD<Premises, String>{
+public interface PremisesDAO extends Update<Premises>, GenericCRUD<Premises, String>{
 
     List<Premises> findByName(String name);
 
